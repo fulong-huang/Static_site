@@ -20,10 +20,11 @@ def markdown_to_block(markdown):
     return markdown_blocks
 
 def block_to_block_type(block):
-    start = block.split(' ', 1)
-    if len(start) <= 6 and len(start.strip('#')) == 0:
+    start = block.split(' ', 1)[0]
+    if len(start) <= 6 and len(start[0].strip('#')) == 0:
         return BlockType.heading
-    elif start == "```":
+
+    if block.startswith("```") and block.endswith("```"):
         code_split = block.split("```")
         if len(code_split) == 3 and len(code_split[0]) == 0 and len(code_split[2]) == 0:
             return BlockType.code
@@ -48,7 +49,7 @@ def block_to_block_type(block):
     splited_block = block.split('\n')
     for i in range(len(splited_block)):
         if not splited_block[i].startswith(f"{i+1}. "):
-            splited_block = False
+            ordered_list = False
             break
     if ordered_list:
         return BlockType.ordered_list
@@ -85,14 +86,17 @@ def markdown_to_html_node(markdown):
 
 
 def quote_block_to_node(block):
-    return LeafNode(tag="blockquote", value=block)
+    quotes = "\n"
+    for b in block.split("\n"):
+        quotes += "\n" + b[1:].strip()
+    return LeafNode(tag="blockquote", value=quotes[1:])
 
 def unordered_list_block_to_node(block):
     block_node = ParentNode(tag="ul", children=[])
     block_node.children = []
     for line in block.split('\n'):
         block_node.children.append(
-                LeafNode(tag="li", value=line)
+                LeafNode(tag="li", value=line[1:].strip())
                 )
     return block_node
 
@@ -101,7 +105,7 @@ def ordered_list_block_to_node(block):
     block_node.children = []
     for line in block.split('\n'):
         block_node.children.append(
-                LeafNode(tag="li", value=line)
+                LeafNode(tag="li", value=line[2:].strip())
                 )
     return block_node
     
@@ -109,14 +113,14 @@ def ordered_list_block_to_node(block):
 def code_block_to_node(block):
     block_node = ParentNode(tag="pre",
                         children=[
-                            LeafNode(tag="code", value=block)
+                            LeafNode(tag="code", value=block.strip("`"))
                             ]
                             )
     return block_node
 
 def heading_block_to_node(block):
     l = len(block.split(' ', 1)[0])
-    return LeafNode(tag=f"h{l+1}", value=block)
+    return LeafNode(tag=f"h{l+1}", value=block[l:].strip())
 
 def paragraph_block_to_node(block):
     return LeafNode(tag="p", value=block)

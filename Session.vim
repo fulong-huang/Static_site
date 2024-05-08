@@ -14,13 +14,30 @@ else
   set shortmess=aoO
 endif
 badd +1 ~/boot/static_site
-badd +3 src/main.py
+badd +9 src/main.py
 badd +1 src/htmlnode.py
-badd +1 src/textnode.py
-badd +2 src/leafnode.py
-badd +129 src/textnode_functions.py
-badd +2 src/block_functions.py
+badd +11 src/textnode.py
+badd +4 src/leafnode.py
+badd +3 src/textnode_functions.py
+badd +92 src/block_functions.py
 badd +1 src/__init__.py
+badd +1 public/newDit/something.txt
+badd +1 public/file.txt
+badd +2 .gitignore
+badd +94 static/index.css
+badd +1 static/rivendell.png
+badd +2 static/folder1/file1.txt
+badd +1 static/folder1/file2.txt
+badd +1 static/folder2/folder2.txt
+badd +1 public/folder1
+badd +2 public/folder2
+badd +1 public/folder1/file1.txt
+badd +1 public/folder1/file2.txt
+badd +2 src/parentnode.py
+badd +35 src/generate_page.py
+badd +2 main.sh
+badd +18 template.html
+badd +39 content/index.md
 argglobal
 %argdel
 $argadd ~/boot/static_site
@@ -28,14 +45,6 @@ edit src/main.py
 let s:save_splitbelow = &splitbelow
 let s:save_splitright = &splitright
 set splitbelow splitright
-wincmd _ | wincmd |
-split
-1wincmd k
-wincmd _ | wincmd |
-vsplit
-1wincmd h
-wincmd w
-wincmd w
 wincmd _ | wincmd |
 vsplit
 1wincmd h
@@ -49,16 +58,10 @@ set winminheight=0
 set winheight=1
 set winminwidth=0
 set winwidth=1
-exe '1resize ' . ((&lines * 36 + 29) / 59)
-exe 'vert 1resize ' . ((&columns * 135 + 136) / 272)
-exe '2resize ' . ((&lines * 36 + 29) / 59)
-exe 'vert 2resize ' . ((&columns * 136 + 136) / 272)
-exe '3resize ' . ((&lines * 18 + 29) / 59)
-exe 'vert 3resize ' . ((&columns * 136 + 136) / 272)
-exe '4resize ' . ((&lines * 18 + 29) / 59)
-exe 'vert 4resize ' . ((&columns * 135 + 136) / 272)
+exe 'vert 1resize ' . ((&columns * 136 + 136) / 272)
+exe 'vert 2resize ' . ((&columns * 135 + 136) / 272)
 argglobal
-balt src/textnode.py
+balt src/block_functions.py
 setlocal fdm=manual
 setlocal fde=0
 setlocal fmr={{{,}}}
@@ -69,18 +72,18 @@ setlocal fdn=20
 setlocal fen
 silent! normal! zE
 let &fdl = &fdl
-let s:l = 4 - ((3 * winheight(0) + 18) / 36)
+let s:l = 8 - ((7 * winheight(0) + 28) / 56)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 4
+keepjumps 8
 normal! 0
 lcd ~/boot/static_site
 wincmd w
 argglobal
-if bufexists(fnamemodify("~/boot/static_site/src", ":p")) | buffer ~/boot/static_site/src | else | edit ~/boot/static_site/src | endif
+if bufexists(fnamemodify("~/boot/static_site/src/generate_page.py", ":p")) | buffer ~/boot/static_site/src/generate_page.py | else | edit ~/boot/static_site/src/generate_page.py | endif
 if &buftype ==# 'terminal'
-  silent file ~/boot/static_site/src
+  silent file ~/boot/static_site/src/generate_page.py
 endif
 setlocal fdm=manual
 setlocal fde=0
@@ -92,71 +95,17 @@ setlocal fdn=20
 setlocal fen
 silent! normal! zE
 let &fdl = &fdl
-let s:l = 11 - ((10 * winheight(0) + 18) / 36)
+let s:l = 35 - ((33 * winheight(0) + 28) / 56)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 11
-normal! 011|
-lcd ~/boot/static_site
-wincmd w
-argglobal
-if bufexists(fnamemodify("~/boot/static_site/src/leafnode.py", ":p")) | buffer ~/boot/static_site/src/leafnode.py | else | edit ~/boot/static_site/src/leafnode.py | endif
-if &buftype ==# 'terminal'
-  silent file ~/boot/static_site/src/leafnode.py
-endif
-balt ~/boot/static_site/src/textnode.py
-setlocal fdm=manual
-setlocal fde=0
-setlocal fmr={{{,}}}
-setlocal fdi=#
-setlocal fdl=0
-setlocal fml=1
-setlocal fdn=20
-setlocal fen
-silent! normal! zE
-let &fdl = &fdl
-let s:l = 4 - ((3 * winheight(0) + 9) / 18)
-if s:l < 1 | let s:l = 1 | endif
-keepjumps exe s:l
-normal! zt
-keepjumps 4
-normal! 0
-lcd ~/boot/static_site
-wincmd w
-argglobal
-if bufexists(fnamemodify("~/boot/static_site/src/textnode.py", ":p")) | buffer ~/boot/static_site/src/textnode.py | else | edit ~/boot/static_site/src/textnode.py | endif
-if &buftype ==# 'terminal'
-  silent file ~/boot/static_site/src/textnode.py
-endif
-balt ~/boot/static_site/src/htmlnode.py
-setlocal fdm=manual
-setlocal fde=0
-setlocal fmr={{{,}}}
-setlocal fdi=#
-setlocal fdl=0
-setlocal fml=1
-setlocal fdn=20
-setlocal fen
-silent! normal! zE
-let &fdl = &fdl
-let s:l = 1 - ((0 * winheight(0) + 9) / 18)
-if s:l < 1 | let s:l = 1 | endif
-keepjumps exe s:l
-normal! zt
-keepjumps 1
+keepjumps 35
 normal! 07|
 lcd ~/boot/static_site
 wincmd w
 2wincmd w
-exe '1resize ' . ((&lines * 36 + 29) / 59)
-exe 'vert 1resize ' . ((&columns * 135 + 136) / 272)
-exe '2resize ' . ((&lines * 36 + 29) / 59)
-exe 'vert 2resize ' . ((&columns * 136 + 136) / 272)
-exe '3resize ' . ((&lines * 18 + 29) / 59)
-exe 'vert 3resize ' . ((&columns * 136 + 136) / 272)
-exe '4resize ' . ((&lines * 18 + 29) / 59)
-exe 'vert 4resize ' . ((&columns * 135 + 136) / 272)
+exe 'vert 1resize ' . ((&columns * 136 + 136) / 272)
+exe 'vert 2resize ' . ((&columns * 135 + 136) / 272)
 tabnext 1
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf
@@ -172,6 +121,7 @@ if filereadable(s:sx)
 endif
 let &g:so = s:so_save | let &g:siso = s:siso_save
 set hlsearch
+nohlsearch
 doautoall SessionLoadPost
 unlet SessionLoad
 " vim: set ft=vim :
