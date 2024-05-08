@@ -5,12 +5,12 @@ from generate_page import *
 
 
 def main():
+    empty_public_folder()
+    copy_content("static", "public")
     print("main")
     #generate_page("content/index.md", "template.html", "public/index.html")
     generate_page_recursive("content", "template.html", "public")
     print("FINISH")
-#    empty_public_folder()
-#    copy_content("static", "public")
     
 def copy_content(from_dir, to_dir):
     for fse in os.listdir(from_dir):

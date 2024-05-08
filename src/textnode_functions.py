@@ -22,9 +22,9 @@ def text_node_to_html_node(text_node):
     elif text_node.text_type == TextType.code:
         leafNode = LeafNode(value=text_node.text, tag='code')
     elif text_node.text_type == TextType.link:
-        leafNode = LeafNode(value=text_node.text, tag='a')
+        leafNode = LeafNode(value=text_node.text, tag='a', props={"href":text_node.url})
     elif text_node.text_type == TextType.image:
-        leafNode = LeafNode(value=text_node.text, tag='img')
+        leafNode = LeafNode(value=text_node.text, tag='img', props={"src":text_node.url})
     else:
         raise Exception("Text node contains invalid type")
     return leafNode
@@ -62,6 +62,8 @@ def _split_node_image(old_node):
     new_nodes = []
     curr_text = old_node.text
     images = extract_markdown_images(curr_text)
+    if len(images) == 0:
+        return [old_node]
     for img in images:
         split_text = curr_text.split(f"![{img[0]}]({img[1]})", 1)
         if len(split_text[0]) != 0:
@@ -88,6 +90,8 @@ def _split_node_link(old_node):
     new_nodes = []
     curr_text = old_node.text
     links = extract_markdown_links(curr_text)
+    if len(links) == 0:
+        return [old_node]
     for link in links:
         split_text = curr_text.split(f"[{link[0]}]({link[1]})", 1)
         if len(split_text[0]) != 0:

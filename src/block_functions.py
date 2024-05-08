@@ -1,6 +1,7 @@
 from htmlnode import HTMLNode
 from parentnode import ParentNode
 from leafnode import LeafNode
+from textnode_functions import *
 
 class BlockType:
     paragraph = "paragraph"
@@ -89,14 +90,22 @@ def quote_block_to_node(block):
     quotes = "\n"
     for b in block.split("\n"):
         quotes += "\n" + b[1:].strip()
-    return LeafNode(tag="blockquote", value=quotes[1:])
+    text_nodes = text_to_textnodes(quotes)
+    children = []
+    for node in text_nodes:
+        children.append(text_node_to_html_node(node))
+    return ParentNode(tag="blockquote", children=children)
 
 def unordered_list_block_to_node(block):
     block_node = ParentNode(tag="ul", children=[])
     block_node.children = []
     for line in block.split('\n'):
+        text_nodes = text_to_textnodes(line[1:].strip())
+        children = []
+        for node in text_nodes:
+            children.append(text_node_to_html_node(node))
         block_node.children.append(
-                LeafNode(tag="li", value=line[1:].strip())
+                ParentNode(tag="li", children=children)
                 )
     return block_node
 
@@ -104,8 +113,12 @@ def ordered_list_block_to_node(block):
     block_node = ParentNode(tag="ol", children=[])
     block_node.children = []
     for line in block.split('\n'):
+        text_nodes = text_to_textnodes(line[2:].strip())
+        children = []
+        for node in text_nodes:
+            children.append(text_node_to_html_node(node))
         block_node.children.append(
-                LeafNode(tag="li", value=line[2:].strip())
+                ParentNode(tag="li", children=children)
                 )
     return block_node
     
@@ -120,10 +133,19 @@ def code_block_to_node(block):
 
 def heading_block_to_node(block):
     l = len(block.split(' ', 1)[0])
-    return LeafNode(tag=f"h{l+1}", value=block[l:].strip())
+    text_nodes = text_to_textnodes(block[l:].strip())
+    children = []
+    for node in text_nodes:
+        children.append(text_node_to_html_node(node))
+
+    return ParentNode(tag=f"h{l+1}", children = children)
 
 def paragraph_block_to_node(block):
-    return LeafNode(tag="p", value=block)
+    text_nodes = text_to_textnodes(block)
+    children = []
+    for node in text_nodes:
+        children.append(text_node_to_html_node(node))
+    return ParentNode(tag="p", children=children)
 
 
 

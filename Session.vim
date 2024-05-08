@@ -14,12 +14,12 @@ else
   set shortmess=aoO
 endif
 badd +1 ~/boot/static_site
-badd +9 src/main.py
+badd +10 src/main.py
 badd +1 src/htmlnode.py
 badd +11 src/textnode.py
 badd +4 src/leafnode.py
-badd +3 src/textnode_functions.py
-badd +92 src/block_functions.py
+badd +129 src/textnode_functions.py
+badd +4 src/block_functions.py
 badd +1 src/__init__.py
 badd +1 public/newDit/something.txt
 badd +1 public/file.txt
@@ -34,14 +34,15 @@ badd +2 public/folder2
 badd +1 public/folder1/file1.txt
 badd +1 public/folder1/file2.txt
 badd +2 src/parentnode.py
-badd +35 src/generate_page.py
+badd +37 src/generate_page.py
 badd +2 main.sh
 badd +18 template.html
-badd +39 content/index.md
+badd +4 content/index.md
+badd +1 content/majesty/index.md
 argglobal
 %argdel
 $argadd ~/boot/static_site
-edit src/main.py
+edit src/block_functions.py
 let s:save_splitbelow = &splitbelow
 let s:save_splitright = &splitright
 set splitbelow splitright
@@ -61,7 +62,6 @@ set winwidth=1
 exe 'vert 1resize ' . ((&columns * 136 + 136) / 272)
 exe 'vert 2resize ' . ((&columns * 135 + 136) / 272)
 argglobal
-balt src/block_functions.py
 setlocal fdm=manual
 setlocal fde=0
 setlocal fmr={{{,}}}
@@ -72,18 +72,18 @@ setlocal fdn=20
 setlocal fen
 silent! normal! zE
 let &fdl = &fdl
-let s:l = 8 - ((7 * winheight(0) + 28) / 56)
+let s:l = 93 - ((28 * winheight(0) + 28) / 56)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 8
-normal! 0
+keepjumps 93
+normal! 012|
 lcd ~/boot/static_site
 wincmd w
 argglobal
-if bufexists(fnamemodify("~/boot/static_site/src/generate_page.py", ":p")) | buffer ~/boot/static_site/src/generate_page.py | else | edit ~/boot/static_site/src/generate_page.py | endif
+if bufexists(fnamemodify("~/boot/static_site/src/textnode_functions.py", ":p")) | buffer ~/boot/static_site/src/textnode_functions.py | else | edit ~/boot/static_site/src/textnode_functions.py | endif
 if &buftype ==# 'terminal'
-  silent file ~/boot/static_site/src/generate_page.py
+  silent file ~/boot/static_site/src/textnode_functions.py
 endif
 setlocal fdm=manual
 setlocal fde=0
@@ -95,15 +95,14 @@ setlocal fdn=20
 setlocal fen
 silent! normal! zE
 let &fdl = &fdl
-let s:l = 35 - ((33 * winheight(0) + 28) / 56)
+let s:l = 48 - ((47 * winheight(0) + 28) / 56)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 35
-normal! 07|
+keepjumps 48
+normal! 0
 lcd ~/boot/static_site
 wincmd w
-2wincmd w
 exe 'vert 1resize ' . ((&columns * 136 + 136) / 272)
 exe 'vert 2resize ' . ((&columns * 135 + 136) / 272)
 tabnext 1
