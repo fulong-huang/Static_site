@@ -1,22 +1,24 @@
-from textnode import TextNode
-from leafnode import LeafNode
-from textnode_functions import *
-from block_functions import *
+import os
+import shutil
+
 
 def main():
-    text = """
-# This is a heading
-
-This is a paragraph of text. It has some **bold** and *italic* words inside of it.
-
-* This is a list item
-* This is another list item
-"""
+    dir_list = os.listdir("public")
+    empty_public_folder()
     
-    blocks = markdown_to_block(text)
-    for block in blocks:
-        print("========")
-        print(block)
+
+def empty_public_folder():
+    folder = "./public"
+    for fse in os.listdir(folder):
+        path = os.path.join(folder, fse)
+            
+        try:
+            if os.path.isfile(path):
+                os.remove(path)
+            else:
+                shutil.rmtree(path)
+        except Exception as e:
+            print(e)
 
 
 
