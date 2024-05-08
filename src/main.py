@@ -3,9 +3,19 @@ import shutil
 
 
 def main():
-    dir_list = os.listdir("public")
     empty_public_folder()
+    copy_content("static", "public")
     
+def copy_content(from_dir, to_dir):
+    for fse in os.listdir(from_dir):
+        print(f"{from_dir}/{fse}")
+        if os.path.isfile(f"{from_dir}/{fse}"):
+            shutil.copy(f"{from_dir}/{fse}", to_dir)
+        else:
+            os.mkdir(f"{to_dir}/{fse}")
+            copy_content(f"{from_dir}/{fse}", f"{to_dir}/{fse}")
+        
+
 
 def empty_public_folder():
     folder = "./public"
