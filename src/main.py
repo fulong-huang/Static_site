@@ -6,7 +6,8 @@ from generate_page import *
 
 def main():
     print("main")
-    generate_page("content/index.md", "template.html", "public/index.html")
+    #generate_page("content/index.md", "template.html", "public/index.html")
+    generate_page_recursive("content", "template.html", "public")
     print("FINISH")
 #    empty_public_folder()
 #    copy_content("static", "public")

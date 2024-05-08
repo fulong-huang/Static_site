@@ -34,7 +34,7 @@ def generate_page(from_path, template_path, dest_path):
 def generate_page_recursive(dir_path_content, template_path, dest_dir_path):
     for fse in os.listdir(dir_path_content):
         if fse.endswith(".md") and os.path.isfile(f"{dir_path_content}/{fse}"):
-            pass
+            generate_page(f"{dir_path_content}/{fse}", template_path, f"{dest_dir_path}/{fse[:-3]}.html")
         elif os.path.isdir(f"{dir_path_content}/{fse}"):
             os.mkdir(f"{dest_dir_path}/{fse}")
             generate_page_recursive(f"{dir_path_content}/{fse}", template_path, f"{dest_dir_path}/{fse}")
